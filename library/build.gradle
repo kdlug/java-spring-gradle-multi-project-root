@@ -1,0 +1,19 @@
+// we don't apply here
+// apply plugin 'org.springframework.boot'
+// because it's not a standalone application, just a library
+
+// library is a module which is added as a dependency by other modules
+// compile project(':library')
+// Fixing package hello.service does not exist
+// By default, when the bootJar tasks are configured, the jar  are disabled.
+// project can be configured to build both an executable archive and a normal archive at the same time by enabling the jar
+jar {
+	enabled = true
+	archiveBaseName = 'multi-project-library'
+	version = '0.0.1-SNAPSHOT'
+}
+
+dependencies {
+	implementation('org.springframework.boot:spring-boot-starter')
+	testImplementation ('org.springframework.boot:spring-boot-starter-test')
+}

@@ -1,0 +1,19 @@
+// adds application:bootRun task
+// enables bootJar
+// adds a possibility to run application by ./gradlew application:bootRun
+apply plugin: 'org.springframework.boot'
+
+bootJar {
+	archiveBaseName = 'multi-project-console'
+	version = '0.0.1-SNAPSHOT'
+}
+
+springBoot {
+	mainClassName = 'hello.console.ConsoleApplication'
+}
+
+dependencies {
+	implementation project(':library')
+	implementation('org.springframework.boot:spring-boot-starter')
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+}

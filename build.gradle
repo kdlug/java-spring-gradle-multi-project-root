@@ -1,0 +1,66 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.7.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+// important to import spring boot
+plugins {
+    id "io.spring.dependency-management" version "1.0.7.RELEASE"
+}
+
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+
+// common configuration for all projects (root and subprojects)
+allprojects {
+    buildscript {
+        repositories {
+            mavenCentral()
+        }
+    }
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = 11
+    group = 'hello'
+
+    repositories {
+        mavenCentral()
+    }
+
+    ext {
+        springBootVersion = '2.0.7.RELEASE'
+    }
+
+    dependencyManagement {
+        imports { 
+            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") 
+        }
+    }
+
+    // display dependencies for all subprojects in multi project build
+    // runs dependencies tasks on all subprojects
+    // to remove duplication just run ./gradlew allDeps --configuration testRuntime
+    task allDeps(type: DependencyReportTask) {}
+}
+
+// root project dependencies
+// should be at the end
+dependencies {
+    implementation project(':library')
+
+    implementation('org.springframework.boot:spring-boot-starter-actuator')
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-devtools')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
