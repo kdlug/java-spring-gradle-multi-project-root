@@ -1,11 +1,15 @@
 package hello.console;
 
 import hello.service.MyService;
+import hello.web.MyWeb;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.Import;
 
 
 // Because ConsoleApplication is inside a different package (hello.console) than MyService (hello.service),
@@ -18,18 +22,21 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ConsoleApplication implements CommandLineRunner {
 
     private final MyService myService;
+    private final MyWeb myWeb;
 
-    public ConsoleApplication(MyService myService) {
+    public ConsoleApplication(MyService myService, MyWeb myWeb) {
         this.myService = myService;
+        this.myWeb = myWeb;
     }
 
     private static Logger LOG = LoggerFactory
             .getLogger(ConsoleApplication.class);
 
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(ConsoleApplication.class);
         LOG.info("STARTING THE APPLICATION");
-        SpringApplication.run(ConsoleApplication.class, args);
+        // Because consoleApplication depends on WebApplication which runs web server
+        // We have to additionally disable web server
+        new SpringApplicationBuilder(ConsoleApplication.class).web(WebApplicationType.NONE).run(args);
         LOG.info("APPLICATION FINISHED");
     }
 
@@ -42,5 +49,6 @@ public class ConsoleApplication implements CommandLineRunner {
         }
 
         LOG.info(myService.message());
+        LOG.info(myWeb.title());
     }
 }

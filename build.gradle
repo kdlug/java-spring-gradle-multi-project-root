@@ -54,6 +54,12 @@ allprojects {
     task allDeps(type: DependencyReportTask) {}
 }
 
+// root package is a dependency for console package
+// fixes error: package hello.web does not exist from console package
+jar {
+    enabled = true
+}
+
 // root project dependencies
 // should be at the end
 dependencies {

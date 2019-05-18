@@ -34,7 +34,7 @@ public class WebApplicationTest {
                 get("/").accept("application/hal+json")
         )
                 .andExpect(status().isOk())
-                .andExpect(content().string("Hello World"));
+                .andExpect(content().string("Hello World MyWeb"));
     }
 
 }

@@ -17,14 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class WebApplication {
 
     private final MyService myService;
+    private final MyWeb myWeb;
 
-    public WebApplication(MyService myService) {
+    public WebApplication(MyService myService, MyWeb myWeb) {
         this.myService = myService;
+        this.myWeb = myWeb;
     }
 
     @GetMapping("/")
     public String home() {
-        return myService.message();
+        return myService.message() + " " + myWeb.title();
     }
 
     public static void main(String[] args) {
